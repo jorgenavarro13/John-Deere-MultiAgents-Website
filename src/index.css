@@ -1,0 +1,21 @@
+.body{
+    margin:0;
+    background-color: darkgray;
+    background-size: cover; 
+    width: 100%;
+    display: flex;            /* Activa el modelo Flexbox */
+    justify-content: center;  /* Centra de forma horizontal */
+    align-items: center;      /* Centra de forma vertical */
+    min-height: 100vh;   
+}
+
+@font-face {
+  font-family: 'JDFont';
+  src: url('/public/fonts/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+}   

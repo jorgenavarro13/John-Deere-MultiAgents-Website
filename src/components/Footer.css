@@ -1,0 +1,16 @@
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent; 
+  padding-left: 3rem; 
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.footer-copyright {
+  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-right: 1.5rem;
+}

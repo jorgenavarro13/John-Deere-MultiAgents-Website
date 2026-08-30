@@ -7,7 +7,8 @@ function Home() {
 
   return (
     <div>
-     <h1>Home</h1>
+     <h1>John Deere MultiAgente</h1>
+     <sp>Bienvenido a nuestra simulación</sp>
     </div>
   );
 }

@@ -9,10 +9,11 @@ import Home from './pages/Home.jsx';
 function App() {
 
   return (
-      <Router>
-        <Navbar/>
+    <div className="app-container">
+      <Router >
+        <Navbar  />
 
-        <div>
+        <div >
           <Routes>
 
             <Route 
@@ -24,6 +25,7 @@ function App() {
 
         <Footer/>
       </Router>
+    </div>
   );
 }
 
