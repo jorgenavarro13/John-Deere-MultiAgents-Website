@@ -17,7 +17,7 @@ function Navbar() {
             <div className="yellow-rectangle"></div>
         </div> 
         <img 
-            src="/public/deere-logo-agriculture.svg" 
+            src="src/assets/deere-logo-agriculture.svg" 
             alt="John Deere Logo" 
           />
         

@@ -13,7 +13,7 @@ function Home() {
 
      <div>
         <video className="video-demo" controls>
-            <source src="/public/video/Demo.mp4" type="video/mp4"></source>
+            <source src="src/assets/video/Demo.mp4" type="video/mp4"></source>
         </video>
      </div>
     </div>
