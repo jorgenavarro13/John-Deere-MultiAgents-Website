@@ -1,0 +1,36 @@
+.navbar-container {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 1rem;
+  border-bottom: 0.02px solid #ced4d6;
+}
+
+.left-container{
+    gap:0rem;
+    display: flex;
+}
+
+.green-rectangle {
+    background-color: green;
+    width: 15px;
+    min-height: 30px;
+    height: 100%;
+}
+
+.yellow-rectangle {
+    background-color:yellow;
+    width: 7px;
+    min-height: 30px;
+    height: 100%;
+}
+
+.nav-logo-container {
+    max-width: 60%;
+    width: 60%
+}
+
+.menu-icon {
+    display: block;
+}
