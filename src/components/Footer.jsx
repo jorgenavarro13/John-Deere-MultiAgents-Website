@@ -3,8 +3,8 @@ import './Footer.css';
 
 function Footer() {
   return (
-    <footer className="footer-container" >
-      <div >
+    <footer  >
+      <div className="footer-container" >
         <span className="footer-copyright">© 2026 John Deere & TEC de Monterrey</span>
       </div>
 
