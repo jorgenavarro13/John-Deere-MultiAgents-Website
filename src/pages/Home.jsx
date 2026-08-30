@@ -6,9 +6,16 @@ import './Home.css'
 function Home() {
 
   return (
-    <div>
-     <h1>John Deere MultiAgente</h1>
-     <sp>Bienvenido a nuestra simulación</sp>
+    <div className="home-container">
+        <br />
+     <h1 class="text-4xl font-bold">John Deere MultiAgentes</h1>
+        <br />
+
+     <div>
+        <video className="video-demo" controls>
+            <source src="/public/video/Demo.mp4" type="video/mp4"></source>
+        </video>
+     </div>
     </div>
   );
 }
