@@ -1,11 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { heroBg } from '../assets/index.js';
 import './Home.css'
+
+const heroStyle = {
+  backgroundImage:
+    `linear-gradient(100deg, rgba(10, 20, 15, 0.85) 0%, rgba(10, 20, 15, 0.55) 45%, rgba(10, 20, 15, 0.15) 100%), url(${heroBg})`,
+};
 
 function Home() {
 
   return (
-    <div className="home-hero">
+    <div className="home-hero" style={heroStyle}>
       <div className="home-hero-content">
         <h1 className="home-title">
           Simula operaciones<br />
@@ -19,7 +25,7 @@ function Home() {
           para comparar escenarios y tomar mejores decisiones de planificación.
         </p>
 
-        <Link to="/game" className="home-cta">
+        <Link to="/simulation" className="home-cta">
           Iniciar simulación <span className="home-cta-arrow">→</span>
         </Link>
       </div>

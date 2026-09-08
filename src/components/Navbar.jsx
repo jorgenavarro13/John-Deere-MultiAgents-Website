@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { favicon as johnDeereLogo } from '../assets/index.js';
 import './Navbar.css';
 
 function Navbar() {
@@ -34,7 +35,7 @@ function Navbar() {
 
                 <div className="navbar-badge">
                     <img
-                        src="/john-deere.svg"
+                        src={johnDeereLogo}
                         alt="John Deere"
                         className="navbar-badge-icon"
                     />
