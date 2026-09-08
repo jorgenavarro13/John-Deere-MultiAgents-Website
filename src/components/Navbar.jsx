@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {navbarLogo} from '../assets/index.js';
 import './Navbar.css';
 
 
@@ -17,7 +18,7 @@ function Navbar() {
             <div className="yellow-rectangle"></div>
         </div> 
         <img 
-            src="src/assets/deere-logo-agriculture.svg" 
+            src={navbarLogo}
             alt="John Deere Logo" 
           />
         

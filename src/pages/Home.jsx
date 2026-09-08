@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './Home.css'
+import {demo1} from '../assets/index.js';
 
 
 function Home() {
@@ -13,8 +14,9 @@ function Home() {
 
      <div>
         <video className="video-demo" controls>
-            <source src="src/assets/video/Demo.mp4" type="video/mp4"></source>
+            <source src={demo1} type="video/mp4"></source>
         </video>
+        
      </div>
     </div>
   );
