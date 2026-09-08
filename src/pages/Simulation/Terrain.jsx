@@ -1,18 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-const CELL_PX = 18;
-const MAX_PX = 260;
+// Controlled component: state lives in the parent (Simulation.jsx).
+// `data` holds { rows, columns, hasObstacles, obstaclePct }.
+// `onChange` receives a patch object, e.g. onChange({ rows: 5 }).
+function Terrain({ data, onChange }) {
 
-function Terrain({ rows, columns, harvesters, carts }) {
+  const { rows, columns, hasObstacles, obstaclePct } = data;
 
-  const [rowsTerrain, setRowsTerrain] = useState(rows ?? 10);
-  const [columnsTerrain, setColumnsTerrain] = useState(columns ?? 10);
-  const [hasObstacles, setHasObstacles] = useState(false);
-  const [obstaclePct, setObstaclePct] = useState(5);
-
-  const r = Number(rowsTerrain) || 0;
-  const c = Number(columnsTerrain) || 0;
-
+  const r = Number(rows) || 0;
+  const c = Number(columns) || 0;
 
   return (
     <div className="terrain-container">
@@ -30,8 +26,8 @@ function Terrain({ rows, columns, harvesters, carts }) {
               type="number"
               id="rows"
               min="1"
-              value={rowsTerrain}
-              onChange={(e) => setRowsTerrain(e.target.value)}
+              value={rows}
+              onChange={(e) => onChange({ rows: e.target.value })}
               required
             />
           </div>
@@ -43,8 +39,8 @@ function Terrain({ rows, columns, harvesters, carts }) {
               type="number"
               id="columns"
               min="1"
-              value={columnsTerrain}
-              onChange={(e) => setColumnsTerrain(e.target.value)}
+              value={columns}
+              onChange={(e) => onChange({ columns: e.target.value })}
               required
             />
           </div>
@@ -55,7 +51,7 @@ function Terrain({ rows, columns, harvesters, carts }) {
                 type="checkbox"
                 id="obstacles"
                 checked={hasObstacles}
-                onChange={(e) => setHasObstacles(e.target.checked)}
+                onChange={(e) => onChange({ hasObstacles: e.target.checked })}
               />
               Incluir obstáculos o zonas restringidas
             </label>
@@ -70,7 +66,7 @@ function Terrain({ rows, columns, harvesters, carts }) {
                   min="0"
                   max="100"
                   value={obstaclePct}
-                  onChange={(e) => setObstaclePct(e.target.value)}
+                  onChange={(e) => onChange({ obstaclePct: e.target.value })}
                 />
                 <span>%</span>
               </div>
@@ -94,8 +90,8 @@ function Terrain({ rows, columns, harvesters, carts }) {
           >
             <div
               style={{
-                width: r*5,
-                height: c*5,
+                width: r * 5,
+                height: c * 5,
                 background: '#1e3d2b',
               }}
             />

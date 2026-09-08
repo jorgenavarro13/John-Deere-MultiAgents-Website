@@ -1,30 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 // Rough cost per unit, used only to derive a recommendation from the budget.
 const HARVESTER_COST = 300000;
 const TRACTOR_COST = 80000;
 
-function Fleet() {
+// Shared so the parent (Simulation.jsx) can compute the effective fleet
+// for the Resume step. This is going to be changed later for the formula.
+export function recommendFleet(budget) {
+  const b = Number(budget) || 0;
+  const harvesters = Math.floor(b / HARVESTER_COST);
+  const tractors = Math.floor((b - harvesters * HARVESTER_COST) / TRACTOR_COST);
+  return { harvesters, tractors };
+}
 
-  // "manual" = user already has the equipment, "budget" = recommend from money available
-  const [mode, setMode] = useState('manual');
+// Controlled component: state lives in the parent (Simulation.jsx).
+// `data` holds { mode, harvesters, tractors, budget }.
+// `onChange` receives a patch object, e.g. onChange({ mode: 'budget' }).
+function Fleet({ data, onChange }) {
 
-  const [harvesters, setHarvesters] = useState(3);
-  const [tractors, setTractors] = useState(2);
-  const [budget, setBudget] = useState(1000000);
-
+  const { mode, harvesters, tractors, budget } = data;
   const isBudget = mode === 'budget';
 
-  // Recommendation: spend budget on harvesters first, rest on tractors.
-
-  // This is going to be changed later for the formula
-  const recHarvesters = Math.floor((Number(budget) || 0) / HARVESTER_COST);
-  const recTractors = Math.floor(
-    ((Number(budget) || 0) - recHarvesters * HARVESTER_COST) / TRACTOR_COST
-  );
-
-  const shownHarvesters = isBudget ? recHarvesters : harvesters;
-  const shownTractors = isBudget ? recTractors : tractors;
+  const rec = recommendFleet(budget);
+  const shownHarvesters = isBudget ? rec.harvesters : harvesters;
+  const shownTractors = isBudget ? rec.tractors : tractors;
 
   return (
     <div className="fleet-container">
@@ -34,7 +33,7 @@ function Fleet() {
       <div className="fleet-modes" style={{ display: 'flex', gap: '24px' }}>
         <button
           type="button"
-          onClick={() => setMode('manual')}
+          onClick={() => onChange({ mode: 'manual' })}
           style={{ background: mode === 'manual' ? '#a9c9a4' : '#d9d9d9' }}
         >
           <h3>Ya cuento con el equipo</h3>
@@ -43,7 +42,7 @@ function Fleet() {
 
         <button
           type="button"
-          onClick={() => setMode('budget')}
+          onClick={() => onChange({ mode: 'budget' })}
           style={{ background: isBudget ? '#a9c9a4' : '#d9d9d9' }}
         >
           <h3>Obtener recomendación</h3>
@@ -61,7 +60,7 @@ function Fleet() {
             id="budget"
             min="0"
             value={budget}
-            onChange={(e) => setBudget(e.target.value)}
+            onChange={(e) => onChange({ budget: e.target.value })}
           />
         </div>
       )}
@@ -75,7 +74,7 @@ function Fleet() {
           id="harvesters"
           min="0"
           value={shownHarvesters}
-          onChange={(e) => setHarvesters(e.target.value)}
+          onChange={(e) => onChange({ harvesters: e.target.value })}
           disabled={isBudget}
         />
       </div>
@@ -89,7 +88,7 @@ function Fleet() {
           id="tractors"
           min="0"
           value={shownTractors}
-          onChange={(e) => setTractors(e.target.value)}
+          onChange={(e) => onChange({ tractors: e.target.value })}
           disabled={isBudget}
         />
       </div>
