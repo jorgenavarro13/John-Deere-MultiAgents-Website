@@ -1,23 +1,28 @@
-import React, { useState } from 'react'
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom';
 import './Home.css'
-import {demo1} from '../assets/index.js';
-
 
 function Home() {
 
   return (
-    <div className="home-container">
-        <br />
-     <h1 class="text-4xl font-bold">John Deere MultiAgentes</h1>
-        <br />
+    <div className="home-hero">
+      <div className="home-hero-content">
+        <h1 className="home-title">
+          Simula operaciones<br />
+          <span className="home-title-accent">agrícolas.</span>
+        </h1>
 
-     <div>
-        <video className="video-demo" controls>
-            <source src={demo1} type="video/mp4"></source>
-        </video>
-        
-     </div>
+        <p className="home-description">
+          Define el terreno y configura la maquinaria.
+          La simulación multiagente representa la operación en el
+          campo y permite evaluar rutas, tiempos, uso de recursos y costos estimados
+          para comparar escenarios y tomar mejores decisiones de planificación.
+        </p>
+
+        <Link to="/simulation" className="home-cta">
+          Iniciar simulación <span className="home-cta-arrow">→</span>
+        </Link>
+      </div>
     </div>
   );
 }

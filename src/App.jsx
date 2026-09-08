@@ -20,7 +20,7 @@ function App() {
       <Router >
         <Navbar  />
 
-        <div >
+        <div className="app-content">
           <Routes>
           <Route
               path="/home" element={<Home />}
