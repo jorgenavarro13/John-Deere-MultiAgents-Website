@@ -1,8 +1,95 @@
-.video-demo {
+.home-hero {
+    position: relative;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     box-sizing: border-box;
+    padding: 8rem 4rem 3rem;
+    overflow: hidden;
+    color: #ffffff;
+
+    background-image:
+        linear-gradient(100deg, rgba(10, 20, 15, 0.85) 0%, rgba(10, 20, 15, 0.55) 45%, rgba(10, 20, 15, 0.15) 100%),
+        url('/hero-bg.png');
+    background-size: cover;
+    background-position: center;
 }
 
-.home-container{
-    text-align: center;
+.home-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    max-width: 640px;
+}
+
+.home-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+    color: #ffffff;
+}
+
+.home-title-accent {
+    color: #7ab648;
+}
+
+.home-description {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #e8ece8;
+    margin: 0;
+    max-width: 480px;
+}
+
+.home-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    background-color: #e5b955;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 0.9rem 1.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.home-cta:hover {
+    background-color: #d9ab3e;
+}
+
+.home-cta-arrow {
+    font-weight: 700;
+}
+
+.home-hero-tagline {
+    position: absolute;
+    left: 3rem;
+    bottom: 2rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #e8ece8;
+}
+
+@media (max-width: 768px) {
+    .home-hero {
+        padding: 6rem 1.5rem 2rem;
+    }
+
+    .home-title {
+        font-size: 2.25rem;
+    }
+
+    .home-hero-tagline {
+        position: static;
+        margin-top: 3rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
+    }
 }
