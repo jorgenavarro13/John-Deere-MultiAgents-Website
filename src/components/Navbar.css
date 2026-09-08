@@ -7,6 +7,27 @@
     background: linear-gradient(180deg, rgba(10, 20, 15, 0.45) 0%, rgba(10, 20, 15, 0) 100%);
 }
 
+/* Light context: on pages without a dark hero behind the bar (the simulation
+   wizard), the white links would be invisible on the white page background and
+   the absolute bar would overlap the content. Detected from the page root class
+   so Navbar.jsx stays untouched. */
+.app-container:has(.simulation-page) .navbar {
+    position: relative;
+    background: var(--jd-surface);
+    border-bottom: 1px solid var(--jd-border);
+}
+
+.app-container:has(.simulation-page) .navbar-link,
+.app-container:has(.simulation-page) .navbar-link-disabled,
+.app-container:has(.simulation-page) .navbar-badge-text,
+.app-container:has(.simulation-page) .menu-icon {
+    color: var(--jd-ink);
+}
+
+.app-container:has(.simulation-page) .navbar-link-active {
+    border-bottom-color: var(--jd-green);
+}
+
 .navbar-container {
     display: flex;
     align-items: center;
@@ -123,5 +144,10 @@
 
     .menu-icon {
         display: block;
+    }
+
+    .app-container:has(.simulation-page) .navbar-links {
+        background: var(--jd-surface);
+        border-bottom: 1px solid var(--jd-border);
     }
 }

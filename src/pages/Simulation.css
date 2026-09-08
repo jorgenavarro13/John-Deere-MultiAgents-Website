@@ -1,0 +1,63 @@
+.simulation-page {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 3rem 2rem 4rem;
+    background-color: var(--jd-surface-alt);
+    color: var(--jd-ink);
+}
+
+.simulation-step {
+    width: 100%;
+    max-width: 960px;
+    background-color: var(--jd-surface);
+    border: 1px solid var(--jd-border);
+    border-radius: var(--jd-radius-lg);
+    box-shadow: var(--jd-shadow);
+    padding: 2.5rem;
+    box-sizing: border-box;
+}
+
+.simulation-actions {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Shared headings inside every wizard step. */
+.simulation-step h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 1.75rem;
+    color: var(--jd-ink);
+}
+
+.simulation-step h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.9rem;
+    color: var(--jd-ink);
+}
+
+@media (max-width: 768px) {
+    .simulation-page {
+        padding: 2rem 1.25rem 3rem;
+        gap: 1.75rem;
+    }
+
+    .simulation-step {
+        padding: 1.5rem;
+    }
+
+    .simulation-actions .jd-button {
+        flex: 1 1 0;
+        justify-content: center;
+        padding: 0.85rem 1rem;
+    }
+}

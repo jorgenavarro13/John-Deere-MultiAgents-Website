@@ -1,4 +1,5 @@
 import React from 'react'
+import './Fleet.css'
 
 // Rough cost per unit, used only to derive a recommendation from the budget.
 const HARVESTER_COST = 300000;
@@ -30,11 +31,11 @@ function Fleet({ data, onChange }) {
       <h1>Configuración de equipo</h1>
 
       {/* Mode selector */}
-      <div className="fleet-modes" style={{ display: 'flex', gap: '24px' }}>
+      <div className="fleet-modes">
         <button
           type="button"
           onClick={() => onChange({ mode: 'manual' })}
-          style={{ background: mode === 'manual' ? '#a9c9a4' : '#d9d9d9' }}
+          className={`fleet-mode${mode === 'manual' ? ' is-active' : ''}`}
         >
           <h3>Ya cuento con el equipo</h3>
           <p>Selecciona manualmente la cantidad de cosechadoras y tractores.</p>
@@ -43,7 +44,7 @@ function Fleet({ data, onChange }) {
         <button
           type="button"
           onClick={() => onChange({ mode: 'budget' })}
-          style={{ background: isBudget ? '#a9c9a4' : '#d9d9d9' }}
+          className={`fleet-mode${isBudget ? ' is-active' : ''}`}
         >
           <h3>Obtener recomendación</h3>
           <p>Ingresa el dinero disponible y calculamos el equipo recomendado.</p>
@@ -52,24 +53,27 @@ function Fleet({ data, onChange }) {
 
       {/* Budget input (only in recommendation mode) */}
       {isBudget && (
-        <div>
-          <label htmlFor="budget">Dinero disponible</label>
-          <br/>
-          <input
-            type="number"
-            id="budget"
-            min="0"
-            value={budget}
-            onChange={(e) => onChange({ budget: e.target.value })}
-          />
+        <div className="fleet-field">
+          <label className="jd-label" htmlFor="budget">Dinero disponible</label>
+          <div className="fleet-money">
+            <span className="fleet-money-symbol">$</span>
+            <input
+              className="jd-input"
+              type="number"
+              id="budget"
+              min="0"
+              value={budget}
+              onChange={(e) => onChange({ budget: e.target.value })}
+            />
+          </div>
         </div>
       )}
 
       {/* Harvesters */}
-      <div>
-        <label htmlFor="harvesters">Harvesters</label>
-        <br/>
+      <div className="fleet-field">
+        <label className="jd-label" htmlFor="harvesters">Cosechadoras</label>
         <input
+          className="jd-input"
           type="number"
           id="harvesters"
           min="0"
@@ -77,13 +81,14 @@ function Fleet({ data, onChange }) {
           onChange={(e) => onChange({ harvesters: e.target.value })}
           disabled={isBudget}
         />
+        {isBudget && <p className="fleet-note">Calculado a partir del presupuesto.</p>}
       </div>
 
       {/* Tractores */}
-      <div>
-        <label htmlFor="tractors">Tractores</label>
-        <br/>
+      <div className="fleet-field">
+        <label className="jd-label" htmlFor="tractors">Tractores</label>
         <input
+          className="jd-input"
           type="number"
           id="tractors"
           min="0"
@@ -91,6 +96,7 @@ function Fleet({ data, onChange }) {
           onChange={(e) => onChange({ tractors: e.target.value })}
           disabled={isBudget}
         />
+        {isBudget && <p className="fleet-note">Calculado a partir del presupuesto.</p>}
       </div>
 
     </div>
