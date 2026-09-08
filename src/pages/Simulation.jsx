@@ -24,16 +24,17 @@ function Simulation() {
     const columns = 10;
 
     const harvesters = 1;
-    const carts = 0;
-
+    const carts = 1;
 
 
   return (
     <div >
-        <StepsSimulation/>
-        { step == "terrain" &&<Terrain/>}
-        { step == "fleet" &&<Fleet/>}
-        { step == "resume" &&<Resume/>}
+        <StepsSimulation s={current_index}/>
+
+        { step == "terrain" && <Terrain rows={rows} columns={columns} harvesters={harvesters} carts={carts}/> }
+        { step == "fleet" && <Fleet/>}
+        { step == "resume" && <Resume/>}
+
         <button onClick={handleNext}>{current_index < steps.length -1 ? "NEXT" : "SIMULATE"}</button>
     </div>
   );
