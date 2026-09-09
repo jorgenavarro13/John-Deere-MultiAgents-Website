@@ -89,3 +89,17 @@ export function openStateStream({ onState, onError }) {
   if (onError) es.onerror = onError;
   return es;
 }
+
+// OpenClaw credentials and gateway access remain on the simulation server.
+export async function sendChat(message, conversationId, signal) {
+  const res = await fetch(`${API_URL}/api/chat`, {
+    method: 'POST',
+    headers: postHeaders(true),
+    body: JSON.stringify({ message, conversationId }),
+    signal,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'No se pudo conectar con el asistente. Comprueba que el servidor esté actualizado y en ejecución.');
+  if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('El asistente no devolvió una respuesta.');
+  return data.reply;
+}

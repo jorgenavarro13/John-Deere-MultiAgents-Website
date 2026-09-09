@@ -5,6 +5,7 @@ import Terrain from './Simulation/Terrain.jsx';
 import StepsSimulation from './Simulation/StepsSimulation.jsx';
 import Viewer from './Simulation/Viewer.jsx';
 import './Simulation.css';
+import FarmChat from './Simulation/FarmChat.jsx';
 
 function Simulation() {
 
@@ -56,6 +57,7 @@ function Simulation() {
 
   return (
     <div className="simulation-page">
+    <FarmChat />
     
     <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
         <Viewer terrain={terrainData} fleet={effectiveFleet}/>
