@@ -1,5 +1,43 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'JDFont';
+  src: url('./assets/fonts/JDFont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Design tokens taken from the existing Home/Navbar styles. */
+:root {
+    --jd-green: #7ab648;
+    --jd-green-dark: #1e3d2b;
+    --jd-green-soft: #a9c9a4;
+    --jd-yellow: #e5b955;
+    --jd-yellow-hover: #d9ab3e;
+    --jd-ink: #1a1a1a;
+    --jd-night: rgba(10, 20, 15, 0.9);
+    --jd-gray: #d9d9d9;
+    --jd-mist: #e8ece8;
+
+    /* Terrain minimap, matched to the Unity "Mapa de Operación" view. */
+    --jd-soil: #7a4a35;
+    --jd-soil-light: #8f5a41;
+    --jd-soil-dark: #4a2f26;
+    --jd-grass: #3f7a2e;
+    --jd-grass-dark: #2f5d24;
+    --jd-bush: #4e7d3a;
+
+    --jd-text-muted: #5c6660;
+    --jd-border: #dfe3df;
+    --jd-surface: #ffffff;
+    --jd-surface-alt: #f5f7f4;
+
+    --jd-radius: 8px;
+    --jd-radius-lg: 12px;
+    --jd-shadow: 0 1px 3px rgba(10, 20, 15, 0.08), 0 8px 24px rgba(10, 20, 15, 0.06);
+}
+
 .body{
     margin: 0;
     width: 100%;
@@ -10,13 +48,89 @@
     min-height: 100vh;
 }
 
-@font-face {
-  font-family: 'JDFont';
-  src: url('/public/fonts/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
 html {
   font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
-}   
+}
+
+/* Shared form controls for the simulation wizard. */
+.jd-input {
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--jd-ink);
+    background-color: var(--jd-surface);
+    border: 1px solid var(--jd-border);
+    border-radius: var(--jd-radius);
+    padding: 0.6rem 0.75rem;
+    width: 100%;
+    max-width: 220px;
+    box-sizing: border-box;
+}
+
+.jd-input:focus {
+    outline: 2px solid var(--jd-green);
+    outline-offset: 1px;
+    border-color: var(--jd-green);
+}
+
+.jd-input:disabled {
+    background-color: var(--jd-surface-alt);
+    color: var(--jd-text-muted);
+    cursor: not-allowed;
+}
+
+.jd-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--jd-ink);
+    margin-bottom: 0.15rem;
+}
+
+.jd-hint {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--jd-text-muted);
+    margin: 0 0 0.6rem;
+}
+
+/* Primary action button, same visual language as the home CTA. */
+.jd-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    background-color: var(--jd-yellow);
+    color: var(--jd-ink);
+    border: none;
+    border-radius: var(--jd-radius);
+    padding: 0.85rem 1.75rem;
+    cursor: pointer;
+}
+
+.jd-button:hover {
+    background-color: var(--jd-yellow-hover);
+}
+
+/* Lower-emphasis action, e.g. going back a step. */
+.jd-button-secondary {
+    background-color: transparent;
+    color: var(--jd-ink);
+    border: 2px solid var(--jd-border);
+}
+
+.jd-button-secondary:hover {
+    background-color: var(--jd-surface-alt);
+    border-color: var(--jd-green-soft);
+}
+
+.jd-button-secondary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.jd-button-secondary:disabled:hover {
+    background-color: transparent;
+    border-color: var(--jd-border);
+}

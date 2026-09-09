@@ -1,0 +1,73 @@
+.fleet-modes {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 2rem;
+}
+
+.fleet-mode {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: left;
+    font: inherit;
+    color: var(--jd-ink);
+    background-color: var(--jd-surface);
+    border: 2px solid var(--jd-border);
+    border-radius: var(--jd-radius);
+    padding: 1.25rem;
+    cursor: pointer;
+}
+
+.fleet-mode:hover {
+    border-color: var(--jd-green-soft);
+}
+
+.fleet-mode.is-active {
+    background-color: var(--jd-green-soft);
+    border-color: var(--jd-green-dark);
+}
+
+.fleet-mode h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+}
+
+.fleet-mode p {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--jd-text-muted);
+    margin: 0;
+}
+
+.fleet-mode.is-active p {
+    color: var(--jd-green-dark);
+}
+
+.fleet-field {
+    margin-bottom: 1.5rem;
+}
+
+/* Money input gets a leading currency symbol. */
+.fleet-money {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.fleet-money-symbol {
+    font-weight: 700;
+    color: var(--jd-text-muted);
+}
+
+.fleet-note {
+    font-size: 0.82rem;
+    color: var(--jd-text-muted);
+    margin: 0.4rem 0 0;
+}
+
+@media (max-width: 768px) {
+    .fleet-modes {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

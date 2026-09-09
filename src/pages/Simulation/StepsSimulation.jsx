@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react'
 import './StepsSimulation.css'
 
-
+// Display labels only. The identifiers below drive the wizard logic and must
+// stay in sync with the `steps` array in Simulation.jsx.
+const STEP_LABELS = {
+    terrain: 'Terreno',
+    fleet: 'Equipo',
+    resume: 'Resumen',
+};
 
 function StepsSimulation({s}) {
 
@@ -10,14 +15,18 @@ function StepsSimulation({s}) {
 
   return (
     <div>
-        <div className ="steps-container" >
+        <ol className ="steps-container" >
 
-            {steps.map((step) => (
-                <div className={`step-box ${step === steps[s] ? 'active' : ''}`}>
-                    <h1>{step}</h1>
-                </div>
+            {steps.map((step, i) => (
+                <li
+                    key={step}
+                    className={`step-box ${step === steps[s] ? 'active' : ''} ${i < s ? 'done' : ''}`}
+                >
+                    <span className="step-marker">{i + 1}</span>
+                    <span className="step-label">{STEP_LABELS[step]}</span>
+                </li>
             ))}
-        </div>
+        </ol>
     </div>
   );
 }

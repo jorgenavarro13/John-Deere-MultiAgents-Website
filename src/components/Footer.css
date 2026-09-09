@@ -3,7 +3,9 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: transparent;
+  background-color: var(--jd-surface);
+  border-top: 1px solid var(--jd-border);
+  color: var(--jd-text-muted);
   padding: 1.25rem 2rem;
   width: 100%;
   box-sizing: border-box;
