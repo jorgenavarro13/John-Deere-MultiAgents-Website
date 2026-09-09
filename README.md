@@ -25,3 +25,7 @@ keeps the current conversation; **+** starts a new one. Reloading or leaving the
 simulation page starts a new chat. Enter sends; Shift + Enter adds a line; Escape
 closes and returns focus to the floating button. Agent instructions can change
 the running simulation. Failed requests are never automatically retried.
+
+Replies stream as OpenClaw generates them. The backend uses the local gateway
+HTTP endpoint; configure it as described in `Servidor/WEB_API.md`. Farm-manager
+uses low reasoning and is asked for 1–3 sentences unless more detail is requested.

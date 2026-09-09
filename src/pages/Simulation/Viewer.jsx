@@ -45,6 +45,27 @@ function transportLabel({ status, queued, phase, state }) {
   return `${PHASE_LABEL[phase]} · tick ${state.tick}`;
 }
 
+// A new campaign needs a fresh scene: this Unity build keeps objects whose
+// IDs disappear from snapshots. Unmounting Unity releases the previous runtime.
+function UnityScene() {
+  const BASE_URL = import.meta.env.VITE_GAME_URL;
+  const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
+    loaderUrl:    `${BASE_URL}/WebDevelopmentTest2.loader.js`,
+    dataUrl:      `${BASE_URL}/WebDevelopmentTest2.data`,
+    frameworkUrl: `${BASE_URL}/WebDevelopmentTest2.framework.js`,
+    codeUrl:      `${BASE_URL}/WebDevelopmentTest2.wasm`,
+  });
+  const loadingPct = Math.round(loadingProgression * 100);
+
+  return <>
+    {!isLoaded && <div className="viewer-loading">
+      <div className="viewer-loading-bar"><span style={{ width: `${loadingPct}%` }} /></div>
+      <p>Cargando simulación… {loadingPct}%</p>
+    </div>}
+    <Unity unityProvider={unityProvider} className="viewer-unity" tabIndex={0} />
+  </>;
+}
+
 function Viewer({ terrain, fleet }) {
   const [view, setView] = useState('simulation'); // 'simulation' | 'graphics'
   const [busy, setBusy] = useState(false);
@@ -57,15 +78,6 @@ function Viewer({ terrain, fleet }) {
   const phase = phaseOf(state);
 
   const config = useMemo(() => buildConfig(terrain, fleet), [terrain, fleet]);
-
-  const BASE_URL = import.meta.env.VITE_GAME_URL;
-  const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
-    loaderUrl:    `${BASE_URL}/WebDevelopmentTest2.loader.js`,
-    dataUrl:      `${BASE_URL}/WebDevelopmentTest2.data`,
-    frameworkUrl: `${BASE_URL}/WebDevelopmentTest2.framework.js`,
-    codeUrl:      `${BASE_URL}/WebDevelopmentTest2.wasm`,
-  });
-  const loadingPct = Math.round(loadingProgression * 100);
 
   // Start / cold reset
   useEffect(() => {
@@ -164,16 +176,7 @@ function Viewer({ terrain, fleet }) {
       <div className="viewer-panel" hidden={view !== 'simulation'}>
         <div className="viewer-stage">
           
-          {!isLoaded && (
-            <div className="viewer-loading">
-              <div className="viewer-loading-bar">
-                <span style={{ width: `${loadingPct}%` }} />
-              </div>
-              <p>Cargando simulación… {loadingPct}%</p>
-            </div>
-          )}
-          
-          <Unity unityProvider={unityProvider} className="viewer-unity" />
+          <UnityScene key={state?.runId ?? 'waiting'} />
 
 
         </div>
