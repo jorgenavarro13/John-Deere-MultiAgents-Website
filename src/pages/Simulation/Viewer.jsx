@@ -60,10 +60,10 @@ function Viewer({ terrain, fleet }) {
 
   const BASE_URL = import.meta.env.VITE_GAME_URL;
   const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
-    loaderUrl: `${BASE_URL}/WebDevelopmentTest2.loader.js`,
-    dataUrl: `${BASE_URL}/WebDevelopmentTest2.data`,
+    loaderUrl:    `${BASE_URL}/WebDevelopmentTest2.loader.js`,
+    dataUrl:      `${BASE_URL}/WebDevelopmentTest2.data`,
     frameworkUrl: `${BASE_URL}/WebDevelopmentTest2.framework.js`,
-    codeUrl: `${BASE_URL}/WebDevelopmentTest2.wasm`,
+    codeUrl:      `${BASE_URL}/WebDevelopmentTest2.wasm`,
   });
   const loadingPct = Math.round(loadingProgression * 100);
 
@@ -146,7 +146,7 @@ function Viewer({ terrain, fleet }) {
         >
           Detener
         </button>
-        
+
         <button
           className="jd-button jd-button-secondary"
           onClick={onReset}
