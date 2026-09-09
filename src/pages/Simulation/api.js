@@ -1,0 +1,91 @@
+// The simulation server (`python3 Servidor/server.py --web-port 8080`)
+export const API_URL =
+  import.meta.env.VITE_API_URL?.replace(/\/$/, '') || 'http://localhost:8080';
+
+// Optional bearer token; only needed if the server runs with `--web-token`.
+const API_TOKEN = import.meta.env.VITE_API_TOKEN || '';
+
+function postHeaders(hasBody) {
+  const h = {};
+  if (hasBody) h['Content-Type'] = 'application/json';
+  if (API_TOKEN) h.Authorization = `Bearer ${API_TOKEN}`;
+  return h;
+}
+
+// The rolling per-tick sample buffer, used to backfill a chart on load.
+// `since` is exclusive: pass the last tick already plotted, or -1 for everything.
+export async function fetchHistory(since = -1) {
+  const res = await fetch(`${API_URL}/api/history?since=${since}`);
+  if (!res.ok) throw new Error(`GET /api/history -> ${res.status}`);
+  return res.json();
+}
+
+// The current tick as KPIs + per-machine rows.
+export async function fetchState() {
+  const res = await fetch(`${API_URL}/api/state`);
+  if (!res.ok) throw new Error(`GET /api/state -> ${res.status}`);
+  return res.json();
+}
+
+// Flat crop / zones / obstacles arrays + machine positions, for the minimap.
+// Meant to be polled at a low rate (~2 s).
+export async function fetchField() {
+  const res = await fetch(`${API_URL}/api/field`);
+  if (!res.ok) throw new Error(`GET /api/field -> ${res.status}`);
+  return res.json();
+}
+
+// One summary row per run since the server started, plus the live one — for
+// the cross-run comparison.
+export async function fetchRuns() {
+  const res = await fetch(`${API_URL}/api/runs`);
+  if (!res.ok) throw new Error(`GET /api/runs -> ${res.status}`);
+  return res.json();
+}
+
+// POST /api/commands/{action} — the transport controls.
+//   start    build the first run and set it going (un-pause on an existing run)
+//   pause    freeze on the current tick
+//   continue resume from the tick where it stopped
+//   reset    same field back to tick 1, held paused
+//   restart  rebuild + run (pass { newSeed: true } for a fresh field)
+// A rebuild ('start' cold / 'reset' / 'restart') answers { queued: true } and
+// lands on the next state message with a bumped runId.
+export async function sendCommand(action, body) {
+  const res = await fetch(`${API_URL}/api/commands/${action}`, {
+    method: 'POST',
+    headers: postHeaders(Boolean(body)),
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) throw new Error(`POST /api/commands/${action} → ${res.status}`);
+  return res.json();
+}
+
+// POST /api/config — apply run parameters, then rebuild and run. This is how
+// the wizard selection is injected instead of relying on server defaults.
+// Accepts any of: rows, cols, harvesters, carts, minObstacles, maxObstacles,
+// newSeed.
+export async function sendConfig(params) {
+  const res = await fetch(`${API_URL}/api/config`, {
+    method: 'POST',
+    headers: postHeaders(true),
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) throw new Error(`POST /api/config → ${res.status}`);
+  return res.json();
+}
+
+// Server-Sent Events: one `/api/state` payload per tick. Returns the
+// EventSource so the caller can close it on unmount.
+export function openStateStream({ onState, onError }) {
+  const es = new EventSource(`${API_URL}/api/state/stream`);
+  es.onmessage = (e) => {
+    try {
+      onState(JSON.parse(e.data));
+    } catch {
+      /* keep-alive comments and partial frames are ignored */
+    }
+  };
+  if (onError) es.onerror = onError;
+  return es;
+}

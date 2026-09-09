@@ -1,0 +1,169 @@
+/* Outer wrapper rendered by Simulation.jsx once the wizard finishes. */
+.visualization-page {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 2rem 4rem;
+    background-color: var(--jd-surface-alt);
+    color: var(--jd-ink);
+}
+
+.viewer {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.viewer-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--jd-ink);
+}
+
+/* Segmented control for switching views. */
+.viewer-tabs {
+    display: inline-flex;
+    padding: 4px;
+    gap: 4px;
+    background-color: var(--jd-surface-alt);
+    border: 1px solid var(--jd-border);
+    border-radius: 999px;
+}
+
+.viewer-tab {
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--jd-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: 0.45rem 1.1rem;
+    cursor: pointer;
+}
+
+.viewer-tab:hover {
+    color: var(--jd-ink);
+}
+
+.viewer-tab.is-active {
+    color: var(--jd-green-dark);
+    background-color: var(--jd-surface);
+    box-shadow: var(--jd-shadow);
+}
+
+.viewer-panel[hidden] {
+    display: none;
+}
+
+/* Transport panel: Start/Continue · Detener · Reiniciar + run state. */
+.viewer-transport {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 1rem 1.25rem;
+    background-color: var(--jd-surface);
+    border: 1px solid var(--jd-border);
+    border-radius: var(--jd-radius-lg);
+    box-shadow: var(--jd-shadow);
+}
+
+.viewer-transport .jd-button {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.25rem;
+}
+
+.viewer-transport .jd-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.viewer-transport .jd-button:disabled:hover {
+    background-color: var(--jd-yellow);
+}
+
+.viewer-transport .jd-button-secondary:disabled:hover {
+    background-color: transparent;
+    border-color: var(--jd-border);
+}
+
+.viewer-transport-state {
+    margin-left: auto;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--jd-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.viewer-transport-error {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #8a2a2a;
+}
+
+/* Unity canvas keeps a 16:9 box and never overflows the column. */
+.viewer-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--jd-green-dark);
+    border-radius: var(--jd-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--jd-shadow);
+}
+
+.viewer-unity {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.viewer-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.viewer-loading-bar {
+    width: 60%;
+    max-width: 280px;
+    height: 6px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.viewer-loading-bar span {
+    display: block;
+    height: 100%;
+    background-color: var(--jd-green);
+    transition: width 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .viewer-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
