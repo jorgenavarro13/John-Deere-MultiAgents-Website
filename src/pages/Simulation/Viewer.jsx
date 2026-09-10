@@ -50,10 +50,10 @@ function transportLabel({ status, queued, phase, state }) {
 function UnityScene() {
   const BASE_URL = import.meta.env.VITE_GAME_URL;
   const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
-    loaderUrl:    `${BASE_URL}/WebDevelopmentTest2.loader.js`,
-    dataUrl:      `${BASE_URL}/WebDevelopmentTest2.data`,
-    frameworkUrl: `${BASE_URL}/WebDevelopmentTest2.framework.js`,
-    codeUrl:      `${BASE_URL}/WebDevelopmentTest2.wasm`,
+    loaderUrl:    `${BASE_URL}/WebDevelopmentTest3.loader.js`,
+    dataUrl:      `${BASE_URL}/WebDevelopmentTest3.data`,
+    frameworkUrl: `${BASE_URL}/WebDevelopmentTest3.framework.js`,
+    codeUrl:      `${BASE_URL}/WebDevelopmentTest3.wasm`,
   });
   const loadingPct = Math.round(loadingProgression * 100);
 
@@ -66,7 +66,7 @@ function UnityScene() {
   </>;
 }
 
-function Viewer({ terrain, fleet }) {
+function Viewer({ terrain, fleet, onNewSimulation }) {
   const [view, setView] = useState('simulation'); // 'simulation' | 'graphics'
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
@@ -170,6 +170,9 @@ function Viewer({ terrain, fleet }) {
         <span className="viewer-transport-state">
           {transportLabel({ status, queued, phase, state })}
         </span>
+        <button className="jd-button viewer-new-simulation" onClick={onNewSimulation}>
+          Iniciar nueva simulación
+        </button>
       </div>
       {error && <p className="viewer-transport-error">{error}</p>}
 
