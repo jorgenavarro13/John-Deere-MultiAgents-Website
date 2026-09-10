@@ -57,11 +57,12 @@ function Simulation() {
 
   return (
     <div className="simulation-page">
+
     <FarmChat />
     
-    <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
-        <Viewer terrain={terrainData} fleet={effectiveFleet}/>
-    </div>
+        <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
+            <Viewer terrain={terrainData} fleet={effectiveFleet}/>
+        </div>
 
     {!completed &&
         <div>
