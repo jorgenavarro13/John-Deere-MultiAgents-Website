@@ -62,6 +62,7 @@ function Simulation() {
 
   return (
     <div className="simulation-page">
+
     <FarmChat />
     
     <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
