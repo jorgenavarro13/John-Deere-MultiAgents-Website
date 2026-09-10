@@ -1,6 +1,7 @@
 .graphics {
     width: 100%;
-    max-width: 960px;
+    max-width: 1280px;
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

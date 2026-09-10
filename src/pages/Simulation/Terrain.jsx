@@ -190,6 +190,9 @@ function Terrain({ data, onChange }) {
               : 'Sin dimensiones'}
             {pct > 0 && ` · ${pct} % restringido`}
           </p>
+          <p className="terrain-caption">
+            Cada celda representa un área de 6 × 6 m (0,0036 ha). El área total del terreno es de {hasSize ? `${(c * r * 100).toLocaleString()} m² (${((c * r) / 10000).toFixed(2)} ha)` : '0 m² (0,00 ha)'}.
+          </p>
 
           {pct > 0 && (
             <div className="terrain-legend">

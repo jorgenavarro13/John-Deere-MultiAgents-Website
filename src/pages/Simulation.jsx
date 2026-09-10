@@ -30,6 +30,11 @@ function Simulation() {
         }
     };
 
+    const handleNewSimulation = () => {
+        setCompleted(false);
+        setCurrentIndex(0);
+    };
+
     // Shared state for the whole wizard. Every step reads/writes here,
     // so Resume can show the final selection.
     const [terrainData, setTerrainData] = useState({
@@ -76,17 +81,12 @@ function Simulation() {
 
   return (
     <div className="simulation-page">
+
     <FarmChat />
     
-    {/* The viewer is mounted only once the wizard is done. Keeping it alive
-        behind `display: none` also keeps the Unity runtime alive, and Unity
-        installs its keyboard handlers on the document: with the build loaded,
-        it swallows every keystroke and no field on the wizard accepts text. */}
-    {completed &&
-        <div className="visualization-page">
-            <Viewer terrain={terrainData} fleet={effectiveFleet}/>
-        </div>
-    }
+    <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
+        <Viewer terrain={terrainData} fleet={effectiveFleet} onNewSimulation={handleNewSimulation}/>
+    </div>
 
     {!completed &&
         <div className="simulation-wizard">

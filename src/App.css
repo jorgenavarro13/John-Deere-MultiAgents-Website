@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'JDFont';
+  src: url('src/assets/fonts/JDFont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'JDFont', sans-serif;
+}
+
+html{
+    font: 'JDFont', sans-serif;
+}
+
 .app-container{
     background-color: white;
     margin: 0;
