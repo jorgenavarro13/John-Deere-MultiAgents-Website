@@ -5,4 +5,3 @@ Repository created to host the [Unity simulation](https://github.com/Fernando946
 ### Tech Stack
 - React
 - Tailwind
-

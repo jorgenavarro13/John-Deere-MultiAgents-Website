@@ -89,3 +89,48 @@ export function openStateStream({ onState, onError }) {
   if (onError) es.onerror = onError;
   return es;
 }
+
+// OpenClaw credentials and gateway access remain on the simulation server.
+export async function sendChat(message, conversationId, signal, onText) {
+  const res = await fetch(`${API_URL}/api/chat`, {
+    method: 'POST',
+    headers: postHeaders(true),
+    body: JSON.stringify({ message, conversationId }),
+    signal,
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'No se pudo conectar con el asistente.');
+  }
+  // Allow a server from before the streaming update during a rolling restart.
+  if (!res.headers.get('content-type')?.includes('application/x-ndjson')) {
+    const data = await res.json();
+    if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('El asistente no devolvió una respuesta.');
+    onText(data.reply);
+    return;
+  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let reply = '';
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      buffer += decoder.decode(value, { stream: !done });
+      let newline;
+      while ((newline = buffer.indexOf('\n')) >= 0) {
+        const line = buffer.slice(0, newline);
+        buffer = buffer.slice(newline + 1);
+        if (!line.trim()) continue;
+        const event = JSON.parse(line);
+        if (event.type === 'error') throw new Error(event.error);
+        if (event.type === 'delta') { reply += event.text; onText(reply); }
+        if (event.type === 'done') return;
+      }
+      if (done) throw new Error('La respuesta se interrumpió. Revisa la simulación antes de repetir una acción.');
+    }
+  } finally {
+    await reader.cancel().catch(() => {});
+    reader.releaseLock();
+  }
+}
