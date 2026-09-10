@@ -21,13 +21,21 @@
     box-sizing: border-box;
 }
 
+.simulation-wizard {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+}
+
 .simulation-actions {
     width: 100%;
     max-width: 960px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 /* Shared headings inside every wizard step. */

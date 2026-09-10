@@ -30,6 +30,11 @@ function Simulation() {
         }
     };
 
+    const handleNewSimulation = () => {
+        setCompleted(false);
+        setCurrentIndex(0);
+    };
+
     // Shared state for the whole wizard. Every step reads/writes here,
     // so Resume can show the final selection.
     const [terrainData, setTerrainData] = useState({
@@ -60,11 +65,11 @@ function Simulation() {
     <FarmChat />
     
     <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
-        <Viewer terrain={terrainData} fleet={effectiveFleet}/>
+        <Viewer terrain={terrainData} fleet={effectiveFleet} onNewSimulation={handleNewSimulation}/>
     </div>
 
     {!completed &&
-        <div>
+        <div className="simulation-wizard">
             <StepsSimulation s={current_index}/>
         
 
