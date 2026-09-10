@@ -82,6 +82,7 @@ function Fleet({ data, onChange, terrain }) {
   };
 
   const onBudgetChange = (event) => {
+    // The numbers already on screen described the previous budget.
     onChange({
       budget: parseBudgetInput(event.target.value),
       selectedProfile: null,
@@ -201,14 +202,12 @@ function Fleet({ data, onChange, terrain }) {
                   <span className="fleet-money-symbol" aria-hidden="true">$</span>
                   <input
                     className="jd-input"
-                    type="number"
+                    type="text"
                     inputMode="numeric"
                     id="budget"
                     ref={budgetInput}
                     autoComplete="off"
-                    min="0"
-                    step="10000"
-                    value={budget}
+                    value={formatBudgetInput(budget)}
                     onChange={onBudgetChange}
                   />
                   <span className="fleet-money-currency">{CURRENCY}</span>
