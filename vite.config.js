@@ -9,10 +9,4 @@ export default defineConfig({
     tailwindcss()
   ],
   base: '/John-Deere-MultiAgents-Website/',
-  test: {
-    environment: 'jsdom',
-    globals: true,
-    setupFiles: ['./src/test/setup.js'],
-    include: ['src/**/*.test.{js,jsx}'],
-  },
 })
