@@ -134,3 +134,51 @@ export async function sendChat(message, conversationId, signal, onText) {
     reader.releaseLock();
   }
 }
+
+// POST /api/fleet-recommendations — ask the server for affordable fleet
+// profiles for a terrain and a budget. Contract (Servidor/web.py):
+//   request  { schemaVersion: 1, requestId, terrain{rows,columns,border,
+//              minObstacles,maxObstacles,foodRatio?}, budget{amount,currency} }
+//   response { schemaVersion, requestId, status: 'completed', costVersion,
+//              terrain, budget, profiles[] }
+// Unit costs live in Python; the page never sends or computes them.
+// Rejections carry a JSON body with `status` and `error`; both are surfaced to
+// the caller through FleetRecommendationError so the UI can pick its wording
+// without ever printing the server's own message.
+export class FleetRecommendationError extends Error {
+  constructor(kind, httpStatus, serverStatus) {
+    super(kind);
+    this.name = 'FleetRecommendationError';
+    this.kind = kind; // 'insufficient_budget' | 'error'
+    this.httpStatus = httpStatus ?? null;
+    this.serverStatus = serverStatus ?? null;
+  }
+}
+
+export async function requestFleetRecommendation(payload, { signal } = {}) {
+  let res;
+  try {
+    res = await fetch(`${API_URL}/api/fleet-recommendations`, {
+      method: 'POST',
+      headers: postHeaders(true),
+      body: JSON.stringify(payload),
+      signal,
+    });
+  } catch (e) {
+    if (e?.name === 'AbortError') throw e;
+    throw new FleetRecommendationError('error', null, 'network');
+  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    // The only rejection the user can act on is a budget that buys no fleet
+    // able to finish the job; everything else is a plain failure.
+    const insufficient =
+      res.status === 400 && /insufficient/i.test(String(data.error || ''));
+    throw new FleetRecommendationError(
+      insufficient ? 'insufficient_budget' : 'error',
+      res.status,
+      data.status || null
+    );
+  }
+  return data;
+}

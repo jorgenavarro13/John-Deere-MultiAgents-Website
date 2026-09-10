@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Fleet, { recommendFleet } from './Simulation/Fleet.jsx';
+import Fleet from './Simulation/Fleet.jsx';
 import Resume from './Simulation/Resume.jsx';
 import Terrain from './Simulation/Terrain.jsx';
 import StepsSimulation from './Simulation/StepsSimulation.jsx';
@@ -44,21 +44,40 @@ function Simulation() {
         obstaclePct: 5,
     });
 
+    // `harvesters` / `tractors` are the only fields the simulation start reads,
+    // in either mode. The rest describe how the numbers were arrived at:
+    // `budget` is the operating budget typed in "Ayúdame a elegir" (digits
+    // only), `selectedProfile` the server profile the user picked and
+    // `recommendationRequestId` the request it came from.
     const [fleetData, setFleetData] = useState({
-        mode: 'manual',        // 'manual' | 'budget'
+        mode: 'manual',        // 'manual' | 'recommended'
         harvesters: 3,
         tractors: 2,
-        budget: 1000000,
+        budget: '',
+        selectedProfile: null,
+        recommendationRequestId: null,
     });
 
-    const updateTerrain = (patch) => setTerrainData((prev) => ({ ...prev, ...patch }));
+    const updateTerrain = (patch) => {
+        setTerrainData((prev) => ({ ...prev, ...patch }));
+        // A recommended fleet belongs to the exact terrain that was analysed.
+        // Changing that terrain removes permission to continue until the user
+        // requests and accepts a fresh recommendation.
+        setFleetData((prev) => prev.mode === 'recommended'
+            ? { ...prev, selectedProfile: null, recommendationRequestId: null }
+            : prev
+        );
+    };
     const updateFleet = (patch) => setFleetData((prev) => ({ ...prev, ...patch }));
 
-    // When the user asked for a recommendation, the effective numbers come
-    // from the budget instead of the manual inputs.
-    const effectiveFleet = fleetData.mode === 'budget'
-        ? { ...fleetData, ...recommendFleet(fleetData.budget) }
-        : fleetData;
+    // Both modes converge on the same two numbers: a recommendation is applied
+    // into `fleetData` when the user accepts it, so Resume and Viewer read one
+    // shape and never need to know which mode produced it.
+    const effectiveFleet = fleetData;
+    const recommendationSelected = fleetData.mode !== 'recommended' || Boolean(
+        fleetData.selectedProfile && fleetData.recommendationRequestId
+    );
+    const nextDisabled = step === 'fleet' && !recommendationSelected;
 
   return (
     <div className="simulation-page">
@@ -76,7 +95,7 @@ function Simulation() {
 
             <div className="simulation-step">
                 { step == "terrain" && <Terrain data={terrainData} onChange={updateTerrain}/> }
-                { step == "fleet" && <Fleet data={fleetData} onChange={updateFleet}/> }
+                { step == "fleet" && <Fleet data={fleetData} onChange={updateFleet} terrain={terrainData}/> }
                 { step == "resume" && <Resume terrain={terrainData} fleet={effectiveFleet}/> }
             </div>
 
@@ -89,7 +108,13 @@ function Simulation() {
                     <span aria-hidden="true">←</span> Atrás
                 </button>
 
-                <button className="jd-button" onClick={handleNext}>{current_index < steps.length -1 ? "Siguiente" : "Simular"}</button>
+                <button
+                    className="jd-button"
+                    onClick={handleNext}
+                    disabled={nextDisabled}
+                >
+                    {current_index < steps.length -1 ? "Siguiente" : "Simular"}
+                </button>
             </div>
         </div>
     }

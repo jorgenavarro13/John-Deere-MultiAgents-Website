@@ -1,12 +1,31 @@
+/* Mode selector -------------------------------------------------------- */
+
+.fleet-modes-group {
+    border: 0;
+    padding: 0;
+    margin: 0 0 2rem;
+}
+
+.fleet-question {
+    padding: 0;
+    margin: 0 0 0.9rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--jd-ink);
+}
+
 .fleet-modes {
     display: flex;
     gap: 24px;
-    margin-bottom: 2rem;
 }
 
+/* Each card is a real radio, so arrow keys and the space bar work without
+   any JavaScript of ours. The input itself is hidden, not removed, so it can
+   still take focus — the ring is drawn on the card around it. */
 .fleet-mode {
     flex: 1 1 0;
     min-width: 0;
+    display: block;
     text-align: left;
     font: inherit;
     color: var(--jd-ink);
@@ -26,37 +45,74 @@
     border-color: var(--jd-green-dark);
 }
 
-.fleet-mode h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 0 0 0.4rem;
+.fleet-mode:has(.fleet-mode-input:focus-visible) {
+    outline: 2px solid var(--jd-green);
+    outline-offset: 2px;
 }
 
-.fleet-mode p {
-    font-size: 0.85rem;
-    line-height: 1.45;
-    color: var(--jd-text-muted);
+.fleet-mode-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
     margin: 0;
 }
 
-.fleet-mode.is-active p {
+.fleet-mode-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.fleet-mode-text {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--jd-text-muted);
+}
+
+.fleet-mode.is-active .fleet-mode-text {
     color: var(--jd-green-dark);
+}
+
+/* Panels --------------------------------------------------------------- */
+
+.fleet-lead {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--jd-text-muted);
+    margin: 0 0 1.25rem;
 }
 
 .fleet-field {
     margin-bottom: 1.5rem;
 }
 
-/* Money input gets a leading currency symbol. */
+/* Money input gets a leading currency symbol and a trailing currency code. */
 .fleet-money {
     display: flex;
     align-items: center;
     gap: 0.4rem;
 }
 
-.fleet-money-symbol {
+.fleet-money .jd-input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.fleet-money-symbol,
+.fleet-money-currency {
     font-weight: 700;
     color: var(--jd-text-muted);
+}
+
+.fleet-disclaimer {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--jd-text-muted);
+    margin: 0 0 1.25rem;
+    max-width: 46ch;
 }
 
 .fleet-note {
@@ -65,9 +121,445 @@
     margin: 0.4rem 0 0;
 }
 
+/* Loading, insufficient budget and failure share one centred layout. */
+.fleet-state {
+    background-color: var(--jd-surface);
+    border: 1px solid var(--jd-border);
+    border-radius: var(--jd-radius-lg);
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.fleet-state h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.5rem;
+}
+
+.fleet-state p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--jd-text-muted);
+    margin: 0 auto 1.25rem;
+    max-width: 44ch;
+}
+
+.fleet-spinner {
+    display: block;
+    width: 28px;
+    height: 28px;
+    margin: 0 auto 1rem;
+    border: 3px solid var(--jd-mist);
+    border-top-color: var(--jd-green);
+    border-radius: 50%;
+    animation: fleet-spin 0.9s linear infinite;
+}
+
+@keyframes fleet-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fleet-spinner { animation-duration: 3s; }
+}
+
+/* Result --------------------------------------------------------------- */
+
+.fleet-result-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+}
+
+.fleet-stale {
+    background-color: var(--jd-surface-alt);
+    border-left: 4px solid var(--jd-yellow);
+    border-radius: var(--jd-radius);
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 1.25rem;
+}
+
+/* The single card: equipment, then money, then performance, then the reason. */
+.fleet-card {
+    background-color: var(--jd-surface);
+    border: 1px solid var(--jd-green-soft);
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(10, 20, 15, 0.04), 0 6px 18px rgba(10, 20, 15, 0.05);
+    padding: 1.3rem 1.6rem 1.4rem;
+}
+
+.fleet-badge {
+    display: inline-block;
+    background-color: var(--jd-green-dark);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    margin: 0 0 1.1rem;
+}
+
+.fleet-headline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+}
+
+.fleet-count {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    color: var(--jd-text-muted);
+    min-width: 0;
+}
+
+.fleet-count strong {
+    font-size: 2.6rem;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--jd-ink);
+}
+
+.fleet-icon {
+    width: 44px;
+    height: 30px;
+    flex: none;
+    fill: var(--jd-green-dark);
+}
+
+.fleet-plus {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--jd-text-muted);
+    align-self: center;
+}
+
+.fleet-headline-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--jd-text-muted);
+    margin: 0 0 1.4rem;
+    max-width: 52ch;
+}
+
+/* Money as one block, so cost, budget and balance are read together. */
+.fleet-budget-block {
+    background-color: var(--jd-surface-alt);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    margin-bottom: 1.3rem;
+}
+
+.fleet-budget-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.fleet-budget-label {
+    font-size: 0.85rem;
+    color: var(--jd-text-muted);
+}
+
+.fleet-budget-amount {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--jd-ink);
+}
+
+.fleet-meter {
+    height: 9px;
+    border-radius: 999px;
+    background-color: var(--jd-mist);
+    overflow: hidden;
+    margin: 0.65rem 0 0.5rem;
+}
+
+.fleet-meter span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background-color: var(--jd-green);
+}
+
+.fleet-budget-caption {
+    font-size: 0.82rem;
+    color: var(--jd-text-muted);
+    margin: 0;
+}
+
+.fleet-budget-row-quiet {
+    border-top: 1px solid var(--jd-border);
+    margin-top: 0.75rem;
+    padding-top: 0.7rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.fleet-cost-note {
+    margin: 0.7rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--jd-text-muted);
+}
+
+/* Three indicators, value first and label underneath. */
+.fleet-indicators {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+}
+
+.fleet-indicators > div {
+    border-left: 1px solid var(--jd-green-soft);
+    padding-left: 0.8rem;
+}
+
+.fleet-indicators dd {
+    margin: 0 0 0.2rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--jd-ink);
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.fleet-indicators dt {
+    font-size: 0.8rem;
+    color: var(--jd-text-muted);
+}
+
+.fleet-reason {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--jd-ink);
+    margin: 0;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--jd-border);
+    max-width: 62ch;
+}
+
+.fleet-similar {
+    background-color: var(--jd-surface-alt);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    margin: 1.25rem 0 0;
+}
+
+.fleet-similar h3 {
+    font-size: 0.98rem;
+    margin: 0 0 0.35rem;
+}
+
+.fleet-similar p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--jd-text-muted);
+    margin: 0;
+}
+
+/* Actions step down in weight: link, outline, then the one filled button. */
+.fleet-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.4rem;
+}
+
+.fleet-link {
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--jd-text-muted);
+    background: none;
+    border: 0;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.fleet-link:hover {
+    color: var(--jd-green-dark);
+}
+
+.fleet-link:focus-visible {
+    outline: 2px solid var(--jd-green);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* The primary action sits at the end of the row on a wide screen. */
+.fleet-actions .jd-button:not(.jd-button-secondary) {
+    margin-left: auto;
+}
+
+.fleet-applied {
+    margin: 1.25rem 0 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--jd-green-dark);
+}
+
+.fleet-selected {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--jd-green-soft);
+    border-radius: var(--jd-radius);
+    background-color: var(--jd-surface-alt);
+    color: var(--jd-green-dark);
+    font-weight: 700;
+}
+
+.fleet-selected-alternative {
+    align-self: flex-start;
+    margin: auto 0 0;
+}
+
+/* Alternatives --------------------------------------------------------- */
+
+.fleet-alternatives {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.fleet-alternative {
+    background-color: var(--jd-surface);
+    border: 1px solid var(--jd-border);
+    border-radius: 16px;
+    padding: 1.15rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.fleet-alternative h3 {
+    font-size: 1rem;
+    margin: 0 0 0.35rem;
+}
+
+.fleet-alternative > p {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--jd-text-muted);
+    margin: 0 0 0.9rem;
+}
+
+.fleet-alternative-fleet {
+    font-size: 0.9rem;
+    color: var(--jd-text-muted);
+}
+
+.fleet-alternative-fleet strong {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--jd-ink);
+}
+
+.fleet-indicators-compact {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+}
+
+.fleet-indicators-compact dd {
+    font-size: 0.98rem;
+}
+
+.fleet-alternative button {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
 @media (max-width: 768px) {
     .fleet-modes {
         flex-direction: column;
         gap: 1rem;
+    }
+
+    .fleet-card {
+        padding: 1.25rem 1.1rem 1.3rem;
+    }
+
+    .fleet-count strong {
+        font-size: 2.1rem;
+    }
+
+    .fleet-headline {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+    }
+
+    .fleet-count {
+        flex-wrap: wrap;
+    }
+
+    .fleet-count span:last-child {
+        flex-basis: 100%;
+        padding-left: 50px;
+    }
+
+    .fleet-indicators,
+    .fleet-alternatives {
+        grid-template-columns: 1fr;
+    }
+
+    .fleet-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .fleet-actions .jd-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .fleet-actions .jd-button:not(.jd-button-secondary) {
+        margin-left: 0;
+    }
+
+    .fleet-selected {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .fleet-headline {
+        grid-template-columns: 1fr;
+        justify-items: start;
+    }
+
+    .fleet-plus {
+        padding-left: 1rem;
+    }
+
+    .fleet-budget-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .fleet-budget-amount {
+        overflow-wrap: anywhere;
     }
 }
