@@ -6,6 +6,8 @@ import StepsSimulation from './Simulation/StepsSimulation.jsx';
 import Viewer from './Simulation/Viewer.jsx';
 import './Simulation.css';
 import FarmChat from './Simulation/FarmChat.jsx';
+import { sendConfig } from './Simulation/api.js';
+import buildConfig from './Simulation/buildConfig.js';
 
 function Simulation() {
 
@@ -14,11 +16,25 @@ function Simulation() {
     const step = steps[current_index];
     const [completed, setCompleted] = useState(false);
 
-    const handleNext = () => {
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleNext = async () => {
         if (current_index < steps.length - 1) {
             setCurrentIndex(current_index+1);
         } else {
-            setCompleted(true);
+            setSubmitting(true);
+            setError('');
+            try {
+                await sendConfig(buildConfig(terrainData, fleetData));
+                setCompleted(true);
+            } catch (error) {
+                setError(error instanceof TypeError
+                    ? 'No se pudo contactar con el servidor de simulación.'
+                    : error.message);
+            } finally {
+                setSubmitting(false);
+            }
         }
     };
 
@@ -84,9 +100,9 @@ function Simulation() {
 
     <FarmChat />
     
-    <div className="visualization-page" style={{ display: completed ? 'block' : 'none' }}>
+    {completed && <div className="visualization-page">
         <Viewer terrain={terrainData} fleet={effectiveFleet} onNewSimulation={handleNewSimulation}/>
-    </div>
+    </div>}
 
     {!completed &&
         <div className="simulation-wizard">
@@ -99,11 +115,12 @@ function Simulation() {
                 { step == "resume" && <Resume terrain={terrainData} fleet={effectiveFleet}/> }
             </div>
 
+            {error && <p role="alert">{error}</p>}
             <div className="simulation-actions">
                 <button
                     className="jd-button jd-button-secondary"
                     onClick={handleBack}
-                    disabled={current_index === 0}
+                    disabled={current_index === 0 || submitting}
                     >
                     <span aria-hidden="true">←</span> Atrás
                 </button>
@@ -111,9 +128,9 @@ function Simulation() {
                 <button
                     className="jd-button"
                     onClick={handleNext}
-                    disabled={nextDisabled}
+                    disabled={nextDisabled || submitting}
                 >
-                    {current_index < steps.length -1 ? "Siguiente" : "Simular"}
+                    {submitting ? "Iniciando…" : current_index < steps.length -1 ? "Siguiente" : "Simular"}
                 </button>
             </div>
         </div>
